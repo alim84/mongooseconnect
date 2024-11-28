@@ -17,8 +17,12 @@ app.get("/", (req, res) => {
 app.post("/createdata", async (req, res) => {
   try {
     let { name } = req.body;
+    let { age } = req.body;
+    let { email } = req.body;
     let createdata = new curdModel({
       name: name,
+      age: age,
+      email: email,
     });
     await createdata.save();
     res.status(201).send({ message: "Data Created", data: createdata });
