@@ -28,8 +28,51 @@ app.post("/createdata", async (req, res) => {
     res.status(201).send({ message: "Data Created", data: createdata });
   } catch (error) {
     console.log(error);
-    res.status(500).sendStatus({ message: "eroor" });
+    res.status(500).send({ message: "error" });
   }
+});
+
+app.get("/alldata", async (req, res) => {
+  try {
+    let alldata = await curdModel.find({});
+    res.status(200).send({ message: "success all Data", data: alldata });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Error Somthing" });
+  }
+});
+app.get("/findone/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    let getone = await curdModel.findOne({ _id: id });
+    res.status(200).send({ message: "successfully one Data", data: getone });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Error Somthing" });
+  }
+});
+
+app.delete("/deletedata/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    let deletedata = await curdModel.findByIdAndDelete({ id });
+    res.status(200).send({ message: "Delete Successfully", data: deletedata });
+  } catch (error) {
+    res.status(500).send({ message: "Delete Successfully" });
+  }
+});
+
+app.patch("/updatadata/:id", async (req, res) => {
+  let { id } = req.params;
+  let { name } = req.body;
+  let updatadata = await curdModel.findByIdAndUpdate(
+    { id },
+    { name },
+    { new: true }
+  );
+  res
+    .status(200)
+    .send({ message: "Successfully data update", data: updatadata });
 });
 
 app.listen(port, (req, res) => {
